@@ -4,9 +4,56 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Server:"
+        />
+    <EditText
+        android:id="@+id/server"
+        android:password="false"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="opposablebrain.com"
+    />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Port:"
+        />
+    <EditText
+        android:id="@+id/port"
+        android:password="false"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="58332"
+    />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Password:"
+        />
+    <EditText
+        android:id="@+id/password"
+        android:password="true"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="9VQh3xweV@"
+    />
+    <Button
+        android:id="@+id/login_button"
+        android:text="Login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    />   
+    <TextView  
+    android:id="@+id/result"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="@string/hello"
+    android:text="This is a demo Bitcoin JSON-RPC client.\nIt connects to the Bitcoin server via an SSL tunnel.\nYou may tunnel the standard client thus:\nstunnel -d [PORT] -r 8332"
     />
 </LinearLayout>

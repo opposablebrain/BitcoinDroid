@@ -103,6 +103,7 @@ public class EasySSLSocketFactory implements SocketFactory,
 		return getSSLContext().getSocketFactory().createSocket();
 	}
 
+	
 	/**
 	 * @see org.apache.http.conn.scheme.SocketFactory#isSecure(java.net.Socket)
 	 */
@@ -114,11 +115,12 @@ public class EasySSLSocketFactory implements SocketFactory,
 	 * @see org.apache.http.conn.scheme.LayeredSocketFactory#createSocket(java.net.Socket,
 	 *      java.lang.String, int, boolean)
 	 */
-	public Socket createSocket(Socket socket, String host, int port,
-			boolean autoClose) throws IOException, UnknownHostException {
-		return getSSLContext().getSocketFactory().createSocket();
-	}
-
+	@Override
+    public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
+                    throws IOException, UnknownHostException {
+            return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
+    }
+	
 	// -------------------------------------------------------------------
 	// javadoc in org.apache.http.conn.scheme.SocketFactory says :
 	// Both Object.equals() and Object.hashCode() must be overridden

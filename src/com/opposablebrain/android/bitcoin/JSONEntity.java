@@ -1,4 +1,4 @@
-package org.alexd.jsonrpc;
+package com.opposablebrain.android.bitcoin;
 
 import java.io.UnsupportedEncodingException;
 

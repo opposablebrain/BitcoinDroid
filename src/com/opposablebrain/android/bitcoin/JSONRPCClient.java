@@ -1,5 +1,6 @@
-package org.alexd.jsonrpc;
+package com.opposablebrain.android.bitcoin;
 
+import org.apache.http.HttpHost;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,9 +13,9 @@ public abstract class JSONRPCClient {
 	 * @param uri The URI of the JSON-RPC service
 	 * @return a JSONRPCClient instance acting as a proxy for the web service
 	 */
-	public static JSONRPCClient create(String uri)
+	public static JSONRPCClient create(HttpHost host, String uri)
 	{
-		return new JSONRPCHttpClient(uri);
+		return new JSONRPCHttpClient(host, uri);
 	}
 	
 	protected abstract JSONObject doJSONRequest(JSONObject request) throws JSONRPCException;

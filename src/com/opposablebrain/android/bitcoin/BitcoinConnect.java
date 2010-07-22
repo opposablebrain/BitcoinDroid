@@ -5,67 +5,107 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-public class BitcoinConnect extends Activity {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        TextView tv = new TextView(this);
-		setContentView(tv);
-//        setContentView(R.layout.main);
-		DefaultHttpClient client = getClient();
-		URI directions;
+public class BitcoinConnect extends Activity implements OnClickListener {
+	/** Called when the activity is first created. */
+	private EditText rPass, rPort, rServer;
+	private Button btnLogin;
+	private TextView tv;
+
+	private int port = -1;
+	private String password = "";
+	private String server = "";
+
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		btnLogin = (Button) findViewById(R.id.login_button);
+		rPass = (EditText) findViewById(R.id.password);
+		rServer = (EditText) findViewById(R.id.server);
+		rPort = (EditText) findViewById(R.id.port);
+		tv = (TextView) findViewById(R.id.result);
+
+
 		try {
-			directions = new URI("https://www.mitfcu.org/");
-			HttpPost post = new HttpPost(directions);
-			HttpResponse response = client.execute(post);
-			HttpEntity entity = response.getEntity();
-			String json_dir = convertStreamToString(entity.getContent());
-			tv.setText(json_dir);
+			port = Integer.parseInt(rPort.getText().toString().trim());
+			password = rPass.getText().toString();
+			server = rServer.getText().toString();
 		} catch (Exception e) {
-			tv.setText(e.toString());
+			tv.setText("Exception while parsing one of the input parameters:\n"
+					+ e.getMessage());
 		}
 
-    }
-    
-    public DefaultHttpClient getClient() {
-        DefaultHttpClient ret = null;
+		// Set Click Listener
+		btnLogin.setOnClickListener(this);
 
-        // sets up parameters
-        HttpParams params = new BasicHttpParams();
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, "utf-8");
-        params.setBooleanParameter("http.protocol.expect-continue", false);
-        
-        // registers schemes for both http and https
-        SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 
-80));
-        registry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
-        ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(params, 
-registry);
-        ret = new DefaultHttpClient(manager, params);
-        return ret;
-    }
+//		getStatus(server, port, password);
+	}
 
-    public String convertStreamToString(InputStream is) throws IOException {
+	public void getStatus(String server, int port, String password) {
+		HttpHost host = new HttpHost(server, port, "https");
+		JSONRPCClient client = JSONRPCClient.create(host, "/");
+		client.setConnectionTimeout(2000);
+		client.setSoTimeout(2000);
+
+		String[] params = { password };
+
+		try {
+			String out = client.callString("getinfo", (Object[]) params);
+			org.json.JSONObject object = new JSONObject(out);
+			double balance = object.getDouble("balance");
+			tv.setText("Balance: " + balance + "\n");
+			double khps = object.getDouble("KHPS");
+			tv.setText(tv.getText() + "KHPS: " + khps + "\n");
+			int blocks = object.getInt("blocks");
+			tv.setText(tv.getText() + "Blocks: " + blocks + "\n");
+			double difficulty = object.getDouble("difficulty");
+			tv.setText(tv.getText() + "Difficulty: " + difficulty + "\n");
+			boolean generate = object.getBoolean("generate");
+			tv.setText(tv.getText() + "Generate: " + generate + "\n");
+
+		} catch (Exception e) {
+			tv.setText(e.getMessage());
+		}
+
+	}
+
+	@Override
+	public void onClick(View v) {
+		getStatus(server, port, password);
+	}
+
+	public String convertStreamToString(InputStream is) throws IOException {
 		if (is != null) {
 			StringBuilder sb = new StringBuilder();
 			String line;

@@ -1,4 +1,4 @@
-package org.alexd.jsonrpc;
+package com.opposablebrain.android.bitcoin;
 
 /**
  * Represents an error during JSON-RPC method call.
