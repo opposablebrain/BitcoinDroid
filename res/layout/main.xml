@@ -15,7 +15,7 @@
         android:singleLine="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="opposablebrain.com"
+        android:text=""
     />
     <TextView
         android:layout_width="fill_parent"
@@ -29,7 +29,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:text="58332"
+        android:text=""
     />
     <TextView
         android:layout_width="fill_parent"
@@ -42,7 +42,7 @@
         android:singleLine="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="9VQh3xweV@"
+        android:text=""
     />
     <Button
         android:id="@+id/login_button"

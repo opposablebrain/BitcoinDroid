@@ -1,0 +1,5 @@
+-keep public class * extends android.app.Activity
+-dontskipnonpubliclibraryclasses
+-optimizationpasses 2
+-printmapping map.txt
+-flattenpackagehierarchy

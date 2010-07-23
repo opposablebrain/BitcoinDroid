@@ -44,14 +44,12 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			password = rPass.getText().toString();
 			server = rServer.getText().toString();
 		} catch (Exception e) {
-			tv.setText("Exception while parsing one of the input parameters:\n"
-					+ e.getMessage());
+//			tv.setText("Exception while parsing one of the input parameters:\n"
+//					+ e.getMessage());
 		}
 
 		// Set Click Listener
 		btnLogin.setOnClickListener(this);
-
-//		getStatus(server, port, password);
 	}
 
 	public void getStatus(String server, int port, String password) {
