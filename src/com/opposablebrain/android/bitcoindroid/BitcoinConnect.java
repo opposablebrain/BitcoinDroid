@@ -87,7 +87,9 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			port = Integer.parseInt(rPort.getText().toString().trim());
 			password = rPass.getText().toString();
 			server = rServer.getText().toString();
-		} catch (Exception e) {}
+			getStatus(server, port, password);
+		} catch (Exception e) {
+		}
 
 		// Set Click Listener
 		btnLogin.setOnClickListener(this);
@@ -120,7 +122,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			boolean generate = object.getBoolean("generate");
 			tv.setText(tv.getText() + "Generate: " + generate + "\n");
 		} catch (Exception e) {
-			tv.setText(e.getMessage());
+			tv.setText(tv.getText() + "Error: " + e.getMessage());
 		}
 
 	}
