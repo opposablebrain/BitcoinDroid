@@ -1,4 +1,4 @@
-package com.opposablebrain.android.bitcoin;
+package com.opposablebrain.android.bitcoindroid;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,6 +23,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import android.util.Log;
 

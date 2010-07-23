@@ -1,4 +1,4 @@
-package com.opposablebrain.android.bitcoin;
+package com.opposablebrain.android.bitcoindroid;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

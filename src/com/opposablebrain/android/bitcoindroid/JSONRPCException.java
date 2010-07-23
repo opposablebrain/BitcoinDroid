@@ -1,4 +1,4 @@
-package com.opposablebrain.android.bitcoin;
+package com.opposablebrain.android.bitcoindroid;
 
 /**
  * Represents an error during JSON-RPC method call.

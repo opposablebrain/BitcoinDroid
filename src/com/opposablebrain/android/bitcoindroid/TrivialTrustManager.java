@@ -1,4 +1,4 @@
-package com.opposablebrain.android.bitcoin;
+package com.opposablebrain.android.bitcoindroid;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;

@@ -1,9 +1,10 @@
-package com.opposablebrain.android.bitcoin;
+package com.opposablebrain.android.bitcoindroid;
 
 import org.apache.http.HttpHost;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 
 public abstract class JSONRPCClient {
