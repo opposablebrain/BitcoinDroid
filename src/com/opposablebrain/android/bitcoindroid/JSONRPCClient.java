@@ -14,9 +14,9 @@ public abstract class JSONRPCClient {
 	 * @param uri The URI of the JSON-RPC service
 	 * @return a JSONRPCClient instance acting as a proxy for the web service
 	 */
-	public static JSONRPCClient create(HttpHost host, String uri, String username, String password)
+	public static JSONRPCClient create(HttpHost host, String uri, String user, String pass)
 	{
-		return new JSONRPCHttpClient(host, uri, username, password);
+		return new JSONRPCHttpClient(host, uri, user, pass);
 	}
 	
 	protected abstract JSONObject doJSONRequest(JSONObject request) throws JSONRPCException;

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     >
     <TextView
         android:layout_width="fill_parent"
@@ -62,11 +62,16 @@
         android:text="Login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-    />   
+    />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+       
     <TextView  
     android:id="@+id/result"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="This is a demo Bitcoin JSON-RPC client.\nIt connects to the Bitcoin server via an SSL tunnel.\nYou may tunnel the bitcoin daemon thus:\nstunnel -d [PORT] -r 8332"
     />
+    </ScrollView>
 </LinearLayout>

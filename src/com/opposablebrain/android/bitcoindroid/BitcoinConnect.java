@@ -1,5 +1,4 @@
 package com.opposablebrain.android.bitcoindroid;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +40,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		
 		String decryptopass, decryptouser, decryptoserver, decryptoport, decryptostatus;
 		
 		btnLogin = (Button) findViewById(R.id.login_button);
@@ -94,6 +93,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
        
 		try {
 			port = Integer.parseInt(rPort.getText().toString().trim());
+			username = rUser.getText().toString();
 			password = rPass.getText().toString();
 			server = rServer.getText().toString();
 			getStatus(server, port, username, password);
@@ -105,13 +105,12 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 	}
 
 	public void getStatus(String server, int port, String username, String password) {
-				
 		HttpHost host = new HttpHost(server, port, "https");
 		JSONRPCClient client = JSONRPCClient.create(host, "/", username, password);
 		client.setConnectionTimeout(2000);
 		client.setSoTimeout(2000);
 		
-		String[] params = { "" };
+		String[] params = {};
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
 		Date currentTime_1 = new Date();
