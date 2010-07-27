@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+        android:layout_width="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="fill_parent">
+   <LinearLayout 
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     >
+       
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -63,15 +68,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-       
     <TextView  
     android:id="@+id/result"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="This is a demo Bitcoin JSON-RPC client.\nIt connects to the Bitcoin server via an SSL tunnel.\nYou may tunnel the bitcoin daemon thus:\nstunnel -d [PORT] -r 8332"
     />
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+ </ScrollView>

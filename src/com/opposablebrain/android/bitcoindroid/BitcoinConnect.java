@@ -96,7 +96,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			username = rUser.getText().toString();
 			password = rPass.getText().toString();
 			server = rServer.getText().toString();
-			getStatus(server, port, username, password);
+			getStatus();
 		} catch (Exception e) {
 		}
 
@@ -104,7 +104,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 		btnLogin.setOnClickListener(this);
 	}
 
-	public void getStatus(String server, int port, String username, String password) {
+	public void getStatus() {
 		HttpHost host = new HttpHost(server, port, "https");
 		JSONRPCClient client = JSONRPCClient.create(host, "/", username, password);
 		client.setConnectionTimeout(2000);
@@ -138,8 +138,15 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		storeSettings();
-		getStatus(server, port, username, password);
+		try {
+			storeSettings();
+			port = Integer.parseInt(rPort.getText().toString().trim());
+			username = rUser.getText().toString();
+			password = rPass.getText().toString();
+			server = rServer.getText().toString();
+			getStatus();
+		} catch (Exception e) {
+		}
 	}
 
 	public void storeSettings(){
