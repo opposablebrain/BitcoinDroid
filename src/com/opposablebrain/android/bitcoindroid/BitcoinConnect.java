@@ -25,15 +25,16 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 
 	private String mk = "IKVxEhN1RbVUMVnOtFGmxqn6TZlScmhF7py86TkksSjOsxEb0EjaT9VClhZkZrx";
 	
-	private EditText rPass, rPort, rServer;
+	private EditText rUser, rPass, rPort, rServer;
 	private Button btnLogin;
 	private TextView tv;
 
 	private int port = -1;
+	private String username ="";
 	private String password = "";
 	private String server = "";
 	private CryptoHelper ch = new CryptoHelper();
-	private String cryptopass, cryptoserver, cryptoport, cryptostatus;
+	private String cryptopass, cryptouser, cryptoserver, cryptoport, cryptostatus;
 
 	
 	@Override
@@ -41,9 +42,10 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		String decryptopass, decryptoserver, decryptoport, decryptostatus;
+		String decryptopass, decryptouser, decryptoserver, decryptoport, decryptostatus;
 		
 		btnLogin = (Button) findViewById(R.id.login_button);
+		rUser = (EditText) findViewById(R.id.username);
 		rPass = (EditText) findViewById(R.id.password);
 		rServer = (EditText) findViewById(R.id.server);
 		rPort = (EditText) findViewById(R.id.port);
@@ -51,6 +53,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		cryptopass = settings.getString("password", "");
+		cryptouser = settings.getString("username", "");
 		cryptoserver = settings.getString("server", "");
 		cryptoport = settings.getString("port", "");
 		cryptostatus = settings.getString("status", "");
@@ -60,6 +63,11 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			decryptopass = ch.decrypt(cryptopass);
 		}catch (CryptoHelperException e){
 			decryptopass = "";
+		}
+		try{
+			decryptouser = ch.decrypt(cryptouser);
+		}catch (CryptoHelperException e){
+			decryptouser = "";
 		}
 		try{
 			decryptoserver = ch.decrypt(cryptoserver);
@@ -77,6 +85,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			decryptostatus = "";
 		}
 		
+		rUser.setText(decryptouser);
 		rPass.setText(decryptopass);
 		rPort.setText(decryptoport);
 		rServer.setText(decryptoserver);
@@ -87,7 +96,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			port = Integer.parseInt(rPort.getText().toString().trim());
 			password = rPass.getText().toString();
 			server = rServer.getText().toString();
-			getStatus(server, port, password);
+			getStatus(server, port, username, password);
 		} catch (Exception e) {
 		}
 
@@ -95,13 +104,14 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 		btnLogin.setOnClickListener(this);
 	}
 
-	public void getStatus(String server, int port, String password) {
+	public void getStatus(String server, int port, String username, String password) {
+				
 		HttpHost host = new HttpHost(server, port, "https");
-		JSONRPCClient client = JSONRPCClient.create(host, "/");
+		JSONRPCClient client = JSONRPCClient.create(host, "/", username, password);
 		client.setConnectionTimeout(2000);
 		client.setSoTimeout(2000);
 		
-		String[] params = { password };
+		String[] params = { "" };
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
 		Date currentTime_1 = new Date();
@@ -130,7 +140,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		storeSettings();
-		getStatus(server, port, password);
+		getStatus(server, port, username, password);
 	}
 
 	public void storeSettings(){
@@ -140,12 +150,14 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 	      ch.setPassword(mk);
 	      try{
 				cryptopass = ch.encrypt(rPass.getText().toString());
+				cryptouser = ch.encrypt(rUser.getText().toString());
 				cryptoserver = ch.encrypt(rServer.getText().toString());
 				cryptoport = ch.encrypt(rPort.getText().toString());
 				cryptostatus = ch.encrypt(tv.getText().toString());
 		  }catch (CryptoHelperException e){}
 
 	      
+	      editor.putString("username", cryptouser );
 	      editor.putString("password", cryptopass );
 	      editor.putString("server", cryptoserver );
 	      editor.putString("port", cryptoport);

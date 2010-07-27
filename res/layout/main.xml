@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     >
     <TextView
         android:layout_width="fill_parent"
@@ -29,6 +29,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:text=""
+    />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        />
+    <EditText
+        android:id="@+id/username"
+        android:password="false"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:text=""
     />
     <TextView

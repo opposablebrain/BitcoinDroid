@@ -41,15 +41,19 @@ public class JSONRPCHttpClient extends JSONRPCClient {
 	 */
 	private String serviceUri;
 	private HttpHost serviceHost;
+	private String serviceUsername;
+	private String servicePassword;
 
 	// HTTP 1.0
 	private static final ProtocolVersion PROTOCOL_VERSION = new ProtocolVersion(
 			"HTTP", 1, 0);
 
-	public JSONRPCHttpClient(HttpHost host, String uri) {
+	public JSONRPCHttpClient(HttpHost host, String uri, String username, String password) {
 		httpClient = getClient();
 		serviceUri = uri;
 		serviceHost = host;
+		serviceUsername = username;
+		servicePassword = password;
 	}
 
 	protected JSONObject doJSONRequest(JSONObject jsonRequest)
@@ -57,6 +61,10 @@ public class JSONRPCHttpClient extends JSONRPCClient {
 		// Create HTTP/POST request with a JSON entity containing the request
 		HttpPost request = new HttpPost(serviceUri);
 		HttpParams params = new BasicHttpParams();
+	
+		params.setParameter("username", serviceUsername);
+		params.setParameter("password", servicePassword);
+		
 		HttpConnectionParams.setConnectionTimeout(params,
 				getConnectionTimeout());
 		HttpConnectionParams.setSoTimeout(params, getSoTimeout());
