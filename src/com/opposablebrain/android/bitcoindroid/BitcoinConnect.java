@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -89,17 +90,7 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 		rPort.setText(decryptoport);
 		rServer.setText(decryptoserver);
 		tv.setText(decryptostatus);
-       
-       
-		try {
-			port = Integer.parseInt(rPort.getText().toString().trim());
-			username = rUser.getText().toString();
-			password = rPass.getText().toString();
-			server = rServer.getText().toString();
-			getStatus();
-		} catch (Exception e) {
-		}
-
+              
 		// Set Click Listener
 		btnLogin.setOnClickListener(this);
 	}
@@ -134,6 +125,11 @@ public class BitcoinConnect extends Activity implements OnClickListener {
 			tv.setText(tv.getText() + "Error: " + e.getMessage());
 		}
 
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	  super.onConfigurationChanged(newConfig);
 	}
 
 	@Override

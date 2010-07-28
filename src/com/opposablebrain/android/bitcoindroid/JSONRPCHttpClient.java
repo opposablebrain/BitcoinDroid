@@ -96,9 +96,9 @@ public class JSONRPCHttpClient extends JSONRPCClient {
 		}
 		// Underlying errors are wrapped into a JSONRPCException instance
 		catch (ClientProtocolException e) {
-			throw new JSONRPCException("HTTP error", e);
+			throw new JSONRPCException("HTTP error. I can connect to the server, but we're not understanding each other.", e);
 		} catch (IOException e) {
-			throw new JSONRPCException("IO error", e);
+			throw new JSONRPCException("IO error. Do you have a working data connection?", e);
 		} catch (JSONException e) {
 			throw new JSONRPCException("Invalid JSON response:\n" + responseString , e);
 		}
