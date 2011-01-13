@@ -1,0 +1,81 @@
+	<p>BitcoinDroid is a thin Android client for Bitcoin. It relies on a headless Bitcoin server running somewhere. The server must use the standard Bitcoin <span class="caps">RPC</span> <span class="caps">API</span> and accept <span class="caps">SSL</span> connections, e.g. via stunnel. </p>
+
+	<p>For reference, here&#8217;s a possible way to set up your server:</p>
+
+	<p>1. I created a startup script, /etc/init.d/bitcoind-ssl. It looks like this:<br />
+<code>
+#!/bin/sh -e</p>
+
+	<p>[ -x /usr/local/bin/bitcoind ] || exit 0<br />
+. /lib/lsb/init-functions<br />
+. /etc/default/rcS</p>
+
+	<p>#The port on which the <span class="caps">SSL</span> tunnel will run<br />
+<span class="caps">PORT</span>=38976
+#Run as this user.<br />
+<span class="caps">USER</span>=username</p>
+
+	<p>case &#8220;$1&#8221; in
+    start)
+   log_begin_msg &#8220;Starting bitcoind&#8230;&#8221;
+   su $USER -c ~$USER/bin/bcstart
+        /usr/bin/stunnel -d $PORT -r 8332
+   ;;
+    stop)
+   log_begin_msg &#8220;Stopping bitcoind&#8230;&#8221;
+   su $USER -c ~$USER/bin/bcstop
+   echo Waiting for server to shutdown cleanly&#8230;
+   sleep 2
+   fuser -n tcp $PORT -k
+   ;;
+    restart|force-reload)
+   su $USER -c ~$USER/bin/bcstop
+   echo Waiting for server to shutdown cleanly&#8230;
+   sleep 2
+   fuser -n tcp $PORT -k
+   su $USER -c ~$USER/bin/bcstart
+        /usr/bin/stunnel -d $PORT -r 8332
+   ;;
+    status)
+   su $USER -c ~$USER/bin/bcstatus
+   ;;
+    *)
+   echo &#8220;Usage: /etc/init.d/bitcoind-ssl {start|stop|restart|force-reload}&#8221;
+   exit 1
+   ;;<br />
+esac</p>
+
+	<p>exit 0<br />
+</code></p>
+
+	<p>2. I made three scripts in ~/bin, bcstart, bcstop, and bcstatus. The names are pretty descriptive. These scripts contain my password but are only readable by me and root, so that&#8217;s relatively safe (esp. since I&#8217;m root).</p>
+
+	<p>3. I scheduled the init script to start at boot-time. You can do something like sudo update-rc.d bitcoind-ssl defaults.</p>
+
+	<p>And, just for completeness, I use logrotate to simultaneously rotate my bitcoin logs and do staggered backups of my wallet:<br />
+<code>
+##
+	<ol>
+		<li>logrotate.conf</li>
+		<li>Schedule me to run in crontab:</li>
+		<li>0 1 * * * /usr/sbin/logrotate &#8212;state /home/username/.bitcoin/logrotate.state /home/username/.bitcoin/logrotate.conf</li>
+	</ol>
+##</p>
+
+	<p>/home/username/.bitcoin/debug.log{
+      rotate 5
+      prerotate
+         /home/username/bin/bcstop
+         sleep 3
+         cp ~/.bitcoin/wallet.dat.4 ~/.bitcoin/wallet.dat.5
+         cp ~/.bitcoin/wallet.dat.3 ~/.bitcoin/wallet.dat.4
+         cp ~/.bitcoin/wallet.dat.2 ~/.bitcoin/wallet.dat.3
+         cp ~/.bitcoin/wallet.dat.1 ~/.bitcoin/wallet.dat.2
+         cp ~/.bitcoin/wallet.dat ~/.bitcoin/wallet.dat.1
+      endscript
+      compress
+      postrotate
+         /home/username/bin/bcstart
+      endscript<br />
+}<br />
+</code></p>
